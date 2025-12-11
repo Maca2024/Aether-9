@@ -3,16 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import * as React from 'react';
+import { useState, useEffect, type FC, type ReactNode } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { AetherField, SingularityScene, QuantumLattice } from './components/QuantumScene';
 import { TetralemmaGate, ResonanceMonitor, CoherenceGraph } from './components/Diagrams';
 import { Oracle, AudioEngine } from './components/Oracle';
 import { Activity, Aperture, Disc } from 'lucide-react';
 
-const { useState, useEffect } = React;
-
-const FadeInSection = ({ children, delay = 0 }: { children?: React.ReactNode, delay?: number }) => {
+const FadeInSection = ({ children, delay = 0 }: { children?: ReactNode, delay?: number }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -43,7 +41,7 @@ const HUD = () => {
   );
 }
 
-const App: React.FC = () => {
+const App: FC = () => {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);

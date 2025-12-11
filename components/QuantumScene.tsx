@@ -3,13 +3,41 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import * as React from 'react';
+import { useRef, useMemo, type FC, Component, type ReactNode } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Points, PointMaterial, Icosahedron, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Destructure hooks from React namespace for safe access
-const { useRef, useMemo } = React;
+// Error Boundary for Canvas components
+class CanvasErrorBoundary extends Component<
+  { children: ReactNode; fallback?: ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: ReactNode; fallback?: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: any) {
+    console.error('Canvas rendering error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || (
+        <div className="flex items-center justify-center h-full bg-void-light/50 border border-white/5 rounded-lg">
+          <p className="text-stone-500 text-sm font-mono">3D Rendering niet beschikbaar</p>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 // --- AETHER FIELD (Background Particles) ---
 const ParticleField = () => {
@@ -52,14 +80,16 @@ const ParticleField = () => {
   );
 };
 
-export const AetherField: React.FC = () => {
+export const AetherField: FC = () => {
   return (
     <div className="absolute inset-0 z-0">
-      <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
-        {/* @ts-ignore */}
-        <fog attach="fog" args={['#030303', 2, 14]} />
-        <ParticleField />
-      </Canvas>
+      <CanvasErrorBoundary>
+        <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
+          {/* @ts-ignore */}
+          <fog attach="fog" args={['#030303', 2, 14]} />
+          <ParticleField />
+        </Canvas>
+      </CanvasErrorBoundary>
     </div>
   );
 };
@@ -108,19 +138,21 @@ const MorphingVoid = () => {
   );
 }
 
-export const SingularityScene: React.FC = () => {
+export const SingularityScene: FC = () => {
   return (
     <div className="w-full h-64 md:h-80 relative rounded-lg overflow-hidden border border-white/5 bg-void-light/50">
       <div className="absolute inset-0 bg-gradient-to-t from-void to-transparent z-10 opacity-50"></div>
-      <Canvas camera={{ position: [0, 0, 4] }}>
-        {/* @ts-ignore */}
-        <ambientLight intensity={0.5} />
-        {/* @ts-ignore */}
-        <pointLight position={[10, 10, 10]} color="#7000FF" intensity={2} />
-        {/* @ts-ignore */}
-        <pointLight position={[-10, -10, -10]} color="#00F0FF" intensity={2} />
-        <MorphingVoid />
-      </Canvas>
+      <CanvasErrorBoundary>
+        <Canvas camera={{ position: [0, 0, 4] }}>
+          {/* @ts-ignore */}
+          <ambientLight intensity={0.5} />
+          {/* @ts-ignore */}
+          <pointLight position={[10, 10, 10]} color="#7000FF" intensity={2} />
+          {/* @ts-ignore */}
+          <pointLight position={[-10, -10, -10]} color="#00F0FF" intensity={2} />
+          <MorphingVoid />
+        </Canvas>
+      </CanvasErrorBoundary>
       <div className="absolute bottom-4 right-4 text-[9px] font-mono text-white/20 tracking-widest z-20">
         FIG 1.0: POTENTIALITEIT
       </div>
@@ -173,22 +205,24 @@ const LatticeStructure = () => {
     );
 };
 
-export const QuantumLattice: React.FC = () => {
+export const QuantumLattice: FC = () => {
     return (
         <div className="w-full h-64 md:h-80 relative rounded-lg overflow-hidden border border-white/5 bg-void-light/50">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-aether-violet/10 via-transparent to-transparent z-0"></div>
-            <Canvas camera={{ position: [0, 0, 6] }}>
-                {/* @ts-ignore */}
-                <ambientLight intensity={0.5} />
-                <LatticeStructure />
-                {/* Connecting lines abstract */}
-                <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
-                    <Sphere args={[2, 4, 2]} scale={[1,1,1]}>
-                         {/* @ts-ignore */}
-                         <meshBasicMaterial color="#7000FF" wireframe transparent opacity={0.1} />
-                    </Sphere>
-                </Float>
-            </Canvas>
+            <CanvasErrorBoundary>
+              <Canvas camera={{ position: [0, 0, 6] }}>
+                  {/* @ts-ignore */}
+                  <ambientLight intensity={0.5} />
+                  <LatticeStructure />
+                  {/* Connecting lines abstract */}
+                  <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
+                      <Sphere args={[2, 4, 2]} scale={[1,1,1]}>
+                           {/* @ts-ignore */}
+                           <meshBasicMaterial color="#7000FF" wireframe transparent opacity={0.1} />
+                      </Sphere>
+                  </Float>
+              </Canvas>
+            </CanvasErrorBoundary>
             <div className="absolute bottom-4 right-4 text-[9px] font-mono text-white/20 tracking-widest z-20">
                 FIG 2.0: MICROTUBULI NETWERK
             </div>

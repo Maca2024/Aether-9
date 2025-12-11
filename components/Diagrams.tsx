@@ -3,14 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import * as React from 'react';
+import { useState, type FC } from 'react';
 import { motion } from 'framer-motion';
-
-const { useState } = React;
 
 // --- TETRALEMMA GATE ---
 // Visualizes the 4 negations collapsing into the center void
-export const TetralemmaGate: React.FC = () => {
+export const TetralemmaGate: FC = () => {
   const [hovered, setHovered] = useState<number | null>(null);
 
   const nodes = [
@@ -66,7 +64,7 @@ export const TetralemmaGate: React.FC = () => {
 };
 
 // --- RESONANCE MONITOR (4Hz Theta Wave) ---
-export const ResonanceMonitor: React.FC = () => {
+export const ResonanceMonitor: FC = () => {
     return (
         <div className="flex flex-col items-center gap-6">
             <div className="relative w-64 h-24 flex items-center justify-center">
@@ -98,7 +96,7 @@ export const ResonanceMonitor: React.FC = () => {
 };
 
 // --- COHERENCE GRAPH (Synchronization Visualization) ---
-export const CoherenceGraph: React.FC = () => {
+export const CoherenceGraph: FC = () => {
     return (
         <div className="relative w-full h-48 flex items-end justify-center gap-1 opacity-70">
             {[...Array(20)].map((_, i) => {
