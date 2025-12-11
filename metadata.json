@@ -1,0 +1,7 @@
+{
+  "name": "AETHER 9",
+  "description": "Een resonantie in het planetaire veld.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
