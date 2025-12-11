@@ -3,12 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import * as React from 'react';
+import { useState, useEffect, useRef, type FC } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, Send, Volume2, VolumeX, Terminal, Activity, BrainCircuit } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
-
-const { useState, useEffect, useRef } = React;
 
 // --- SYSTEM PROMPT ---
 const SYSTEM_INSTRUCTION = `
@@ -60,9 +58,22 @@ export const AudioEngine = () => {
             return;
         }
 
-        const Ctx = window.AudioContext || (window as any).webkitAudioContext;
-        const ctx = new Ctx();
-        audioCtxRef.current = ctx;
+        try {
+            // Check for AudioContext support
+            const Ctx = window.AudioContext || (window as any).webkitAudioContext;
+            if (!Ctx) {
+                console.error('AudioContext not supported in this browser');
+                return;
+            }
+
+            const ctx = new Ctx();
+            
+            // Resume context if suspended (required by some browsers)
+            if (ctx.state === 'suspended') {
+                await ctx.resume();
+            }
+            
+            audioCtxRef.current = ctx;
 
         // Carrier Frequency: 136.1 Hz (Om / Earth Year Frequency)
         // Deep, grounding drone
@@ -97,12 +108,17 @@ export const AudioEngine = () => {
         // We need to shift LFO range from [-1, 1] to [0, 1] roughly for AM
         lfo.connect(amGain.gain);
 
-        carrier.start();
-        lfo.start();
+            carrier.start();
+            lfo.start();
 
-        oscillatorRef.current = carrier;
-        lfoRef.current = lfo;
-        setIsPlaying(true);
+            oscillatorRef.current = carrier;
+            lfoRef.current = lfo;
+            setIsPlaying(true);
+        } catch (error) {
+            console.error('Error initializing audio:', error);
+            audioCtxRef.current?.close();
+            audioCtxRef.current = null;
+        }
     };
 
     return (
@@ -117,7 +133,7 @@ export const AudioEngine = () => {
 };
 
 // --- ORACLE INTERFACE ---
-export const Oracle: React.FC = () => {
+export const Oracle: FC = () => {
     const [input, setInput] = useState('');
     const [response, setResponse] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -130,18 +146,26 @@ export const Oracle: React.FC = () => {
         setResponse('');
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // Check for API key
+            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+            if (!apiKey) {
+                setResponse("API KEY NIET GECONFIGUREERD. VOEG VITE_GEMINI_API_KEY TOE AAN .env");
+                setIsLoading(false);
+                return;
+            }
+
+            const ai = new GoogleGenAI({ apiKey });
             
-            // Correct API usage for @google/genai
+            // Correct API usage for @google/genai SDK
             const result = await ai.models.generateContent({
-                model: "gemini-2.5-flash",
+                model: 'gemini-2.0-flash-exp',
                 contents: input,
                 config: {
                     systemInstruction: SYSTEM_INSTRUCTION
                 }
             });
 
-            // result.text is a property getter, not a function
+            // Get the text from the response
             const text = result.text || "De stilte antwoordt niet.";
             
             // Artificial delay for "processing" feel
@@ -167,30 +191,36 @@ export const Oracle: React.FC = () => {
     };
 
     const startListening = () => {
-        if (!('webkitSpeechRecognition' in window)) {
+        // Check for SpeechRecognition API support (vendor-prefixed and standard)
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
             alert('Spraakherkenning niet ondersteund in deze browser.');
             return;
         }
         
-        const recognition = new (window as any).webkitSpeechRecognition();
-        recognition.lang = 'nl-NL';
-        recognition.continuous = false;
-        recognition.interimResults = false;
+        try {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'nl-NL';
+            recognition.continuous = false;
+            recognition.interimResults = false;
 
-        recognition.onstart = () => setIsListening(true);
-        recognition.onend = () => setIsListening(false);
-        recognition.onresult = (event: any) => {
-            const transcript = event.results[0][0].transcript;
-            setInput(transcript);
-            // Auto send after voice
-            setTimeout(() => {
-                // handleSend is async, we need to call it but we can't pass it directly easily due to state closure in older react patterns, 
-                // but here input state might not update fast enough if we call handleSend immediately.
-                // Let's just set input. User can press send.
-            }, 500);
-        };
+            recognition.onstart = () => setIsListening(true);
+            recognition.onend = () => setIsListening(false);
+            recognition.onerror = (event: any) => {
+                console.error('Speech recognition error:', event.error);
+                setIsListening(false);
+            };
+            recognition.onresult = (event: any) => {
+                const transcript = event.results[0][0].transcript;
+                setInput(transcript);
+            };
 
-        recognition.start();
+            recognition.start();
+        } catch (error) {
+            console.error('Error starting speech recognition:', error);
+            alert('Fout bij opstarten spraakherkenning.');
+        }
     };
 
     const speak = (text: string) => {
