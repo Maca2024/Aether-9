@@ -157,14 +157,16 @@ export const Oracle: FC = () => {
             const ai = new GoogleGenAI({ apiKey });
             
             // Correct API usage for @google/genai SDK
-            const model = ai.models.get('gemini-2.0-flash-exp');
-            const result = await model.generateContent({
-                contents: [{ role: 'user', parts: [{ text: input }] }],
-                systemInstruction: SYSTEM_INSTRUCTION
+            const result = await ai.models.generateContent({
+                model: 'gemini-2.0-flash-exp',
+                contents: input,
+                config: {
+                    systemInstruction: SYSTEM_INSTRUCTION
+                }
             });
 
             // Get the text from the response
-            const text = result.response?.text() || "De stilte antwoordt niet.";
+            const text = result.text || "De stilte antwoordt niet.";
             
             // Artificial delay for "processing" feel
             let i = 0;
