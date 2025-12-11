@@ -3,13 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Stars, Icosahedron, MeshDistortMaterial, Points, PointMaterial } from '@react-three/drei';
+import { Float, Stars, Icosahedron, MeshDistortMaterial, Points, PointMaterial, Sphere, Line } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Add type definitions for R3F intrinsic elements to satisfy TypeScript
-// Augment React's JSX namespace for modern setups
 declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
@@ -18,11 +17,12 @@ declare module 'react' {
       meshBasicMaterial: any;
       ambientLight: any;
       pointLight: any;
+      instancedMesh: any;
+      dodecahedronGeometry: any;
     }
   }
 }
 
-// Augment global JSX namespace as fallback
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -31,6 +31,8 @@ declare global {
       meshBasicMaterial: any;
       ambientLight: any;
       pointLight: any;
+      instancedMesh: any;
+      dodecahedronGeometry: any;
     }
   }
 }
@@ -38,25 +40,23 @@ declare global {
 // --- AETHER FIELD (Background Particles) ---
 const ParticleField = () => {
   const ref = useRef<THREE.Points>(null);
-  // MASSIVE EXPANSION: Increased to 5000 for deep cosmic density
-  const count = 5000;
+  // INCREASED: 5000 * 1.25 = 6250 particles
+  const count = 6250;
   
   const [positions] = useMemo(() => {
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      // Extended range for more depth (spread from 25 to 40)
-      positions[i * 3] = (Math.random() - 0.5) * 40;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 40;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 40;
+      positions[i * 3] = (Math.random() - 0.5) * 45; // Slightly wider spread
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 45;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 45;
     }
     return [positions];
   }, [count]);
 
   useFrame((state) => {
     if (ref.current) {
-      // Slower, heavier rotation for scale
-      ref.current.rotation.x = state.clock.getElapsedTime() * 0.01;
-      ref.current.rotation.y = state.clock.getElapsedTime() * 0.015;
+      ref.current.rotation.x = state.clock.getElapsedTime() * 0.008;
+      ref.current.rotation.y = state.clock.getElapsedTime() * 0.012;
     }
   });
 
@@ -66,10 +66,10 @@ const ParticleField = () => {
         <PointMaterial
           transparent
           color="#ffffff"
-          size={0.015}
+          size={0.012} // Slightly smaller individual stars for depth
           sizeAttenuation={true}
           depthWrite={false}
-          opacity={0.4}
+          opacity={0.45}
         />
       </Points>
     </group>
@@ -80,7 +80,7 @@ export const AetherField: React.FC = () => {
   return (
     <div className="absolute inset-0 z-0">
       <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
-        <fog attach="fog" args={['#030303', 2, 12]} />
+        <fog attach="fog" args={['#030303', 2, 14]} />
         <ParticleField />
       </Canvas>
     </div>
@@ -144,4 +144,66 @@ export const SingularityScene: React.FC = () => {
       </div>
     </div>
   );
+};
+
+// --- QUANTUM LATTICE (Visualizing the "Mycelium/Microtubuli") ---
+const LatticeStructure = () => {
+    const meshRef = useRef<THREE.InstancedMesh>(null);
+    const count = 40;
+    const tempObject = new THREE.Object3D();
+    
+    useFrame((state) => {
+        if(!meshRef.current) return;
+        const time = state.clock.getElapsedTime();
+        
+        let idx = 0;
+        // Create a spiral/helix structure representing microtubules
+        for (let i = 0; i < count; i++) {
+            const angle = (i / count) * Math.PI * 8;
+            const radius = 1.5 + Math.sin(time * 0.5 + i * 0.1) * 0.2;
+            const x = Math.cos(angle) * radius;
+            const y = (i / count) * 6 - 3;
+            const z = Math.sin(angle) * radius;
+            
+            tempObject.position.set(x, y, z);
+            tempObject.rotation.set(time * 0.2, angle, 0);
+            
+            // Pulse effect
+            const scale = 1 + Math.sin(time * 2 + i) * 0.3;
+            tempObject.scale.set(scale, scale, scale);
+            
+            tempObject.updateMatrix();
+            meshRef.current.setMatrixAt(idx++, tempObject.matrix);
+        }
+        meshRef.current.instanceMatrix.needsUpdate = true;
+        meshRef.current.rotation.y = time * 0.1;
+    });
+
+    return (
+        <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
+            <dodecahedronGeometry args={[0.15, 0]} />
+            <meshBasicMaterial color="#00F0FF" wireframe transparent opacity={0.4} />
+        </instancedMesh>
+    );
+};
+
+export const QuantumLattice: React.FC = () => {
+    return (
+        <div className="w-full h-64 md:h-80 relative rounded-lg overflow-hidden border border-white/5 bg-void-light/50">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-aether-violet/10 via-transparent to-transparent z-0"></div>
+            <Canvas camera={{ position: [0, 0, 6] }}>
+                <ambientLight intensity={0.5} />
+                <LatticeStructure />
+                {/* Connecting lines abstract */}
+                <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
+                    <Sphere args={[2, 4, 2]} scale={[1,1,1]}>
+                         <meshBasicMaterial color="#7000FF" wireframe transparent opacity={0.1} />
+                    </Sphere>
+                </Float>
+            </Canvas>
+            <div className="absolute bottom-4 right-4 text-[9px] font-mono text-white/20 tracking-widest z-20">
+                FIG 2.0: MICROTUBULI NETWERK
+            </div>
+        </div>
+    );
 };
