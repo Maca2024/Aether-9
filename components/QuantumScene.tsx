@@ -55,8 +55,11 @@ const ParticleField = () => {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.x = state.clock.getElapsedTime() * 0.008;
-      ref.current.rotation.y = state.clock.getElapsedTime() * 0.012;
+      // INCREASED SPEED BY ~30%
+      // Old X: 0.008 -> New: 0.011
+      // Old Y: 0.012 -> New: 0.016
+      ref.current.rotation.x = state.clock.getElapsedTime() * 0.011;
+      ref.current.rotation.y = state.clock.getElapsedTime() * 0.016;
     }
   });
 
@@ -66,10 +69,12 @@ const ParticleField = () => {
         <PointMaterial
           transparent
           color="#ffffff"
-          size={0.012} // Slightly smaller individual stars for depth
+          // INCREASED SIZE BY ~30% (0.012 -> 0.016)
+          size={0.016} 
           sizeAttenuation={true}
           depthWrite={false}
-          opacity={0.45}
+          // INCREASED OPACITY BY ~30% (0.45 -> 0.6)
+          opacity={0.6}
         />
       </Points>
     </group>
