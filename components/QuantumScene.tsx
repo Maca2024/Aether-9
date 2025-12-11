@@ -8,7 +8,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Points, PointMaterial, Icosahedron, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Destructure hooks from React namespace for safe access
 const { useRef, useMemo } = React;
 
 // --- AETHER FIELD (Background Particles) ---
