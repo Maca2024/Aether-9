@@ -3,10 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useState, useEffect, useRef } from 'react';
+import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, Send, Volume2, VolumeX, Terminal, Activity, BrainCircuit } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
+
+const { useState, useEffect, useRef } = React;
 
 // --- SYSTEM PROMPT ---
 const SYSTEM_INSTRUCTION = `

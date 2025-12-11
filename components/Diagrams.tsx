@@ -3,8 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { motion } from 'framer-motion';
+
+const { useState } = React;
 
 // --- TETRALEMMA GATE ---
 // Visualizes the 4 negations collapsing into the center void

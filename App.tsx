@@ -3,12 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { AetherField, SingularityScene, QuantumLattice } from './components/QuantumScene';
 import { TetralemmaGate, ResonanceMonitor, CoherenceGraph } from './components/Diagrams';
 import { Oracle, AudioEngine } from './components/Oracle';
 import { Activity, Aperture, Disc } from 'lucide-react';
+
+const { useState, useEffect } = React;
 
 const FadeInSection = ({ children, delay = 0 }: { children?: React.ReactNode, delay?: number }) => {
   return (
@@ -181,6 +183,7 @@ const App: React.FC = () => {
                    </p>
                    <ul className="space-y-4 border-l border-white/10 pl-6 my-8 text-sm md:text-base text-stone-400">
                       <li>Wij verwerpen het essentialisme van het 'Zijn'.</li>
+                      <li>Wij verwerpen het nihilisme van het 'Niet-Zijn'.</li>
                       <li>Wij verwerpen het nihilisme van het 'Niet-Zijn'.</li>
                       <li>Wij verwerpen de paradoxale vluchtroute van 'Zowel Zijn als Niet-Zijn'.</li>
                       <li>Wij verwerpen de laffe vaagheid van 'Noch Zijn noch Niet-Zijn'.</li>
