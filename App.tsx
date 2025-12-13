@@ -3,14 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { AetherField, SingularityScene, QuantumLattice } from './components/QuantumScene';
 import { TetralemmaGate, ResonanceMonitor, CoherenceGraph } from './components/Diagrams';
 import { Oracle, AudioEngine } from './components/Oracle';
 import { Activity, Aperture, Disc } from 'lucide-react';
-
-const { useState, useEffect } = React;
 
 const FadeInSection = ({ children, delay = 0 }: { children?: React.ReactNode, delay?: number }) => {
   return (
@@ -31,13 +29,13 @@ const HUD = () => {
       <div className="flex gap-4 flex-col md:flex-row md:items-center">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 bg-aether-cyan rounded-full animate-pulse"></span>
-          <span>NETWERK: ACTIEF</span>
+          <span>STATUS: OPEN</span>
         </div>
         <AudioEngine />
       </div>
       <div className="text-right">
-        <div>PROTOCOL: SUNYATA</div>
-        <div>V.9.3.0 ORCH-OR</div>
+        <div>PROTOCOL: WAARNEMING</div>
+        <div>V.9.3.0 NU</div>
       </div>
     </div>
   );
@@ -88,7 +86,7 @@ const App: React.FC = () => {
               transition={{ delay: 1.5, duration: 1.5 }}
               className="font-mono text-xs md:text-sm tracking-[0.3em] text-aether-dim uppercase mt-12"
             >
-              De ruis stopt aan deze rand.
+              De ruimte tussen de gedachten.
             </motion.p>
           </motion.div>
 
@@ -107,11 +105,17 @@ const App: React.FC = () => {
         <section className="min-h-[60vh] flex items-center justify-center py-24 px-6 md:px-24 max-w-4xl mx-auto">
           <FadeInSection>
             <p className="text-lg md:text-2xl font-light leading-relaxed text-center text-stone-300/80">
-              U betreedt nu de ruimte tussen de gedachten. De grens waar uw persona verdampt en de waarnemer overblijft. Dit is het vijfde element, de kwintessens, waar de binaire logica van nul en één oplost in een veld van pure potentialiteit.
+              Je betreedt geen nieuwe ruimte. De aandacht zakt simpelweg weg uit haar gewoonte.
               <br /><br />
-              Hier gelden de wetten van de newtoniaanse haast niet meer. Dit is geen bestemming op een kaart, geen punt in de lineaire tijd. Dit is een frequentie. Een staat van zijn die altijd aanwezig was, maar overstemd werd door de statische elektriciteit van het ego.
+              Er is een grens waar het verhaal dat je over jezelf bijhield oplost. Niet met geweld. Niet door inzicht. Maar doordat het niet langer nodig is.
               <br /><br />
-              <span className="text-aether-cyan/60 block mt-8">Adem uit. En laat de adem wachten voordat hij terugkeert.</span>
+              Wat overblijft, is geen waarnemer tegenover iets. Alleen waarnemen zelf.
+              <br /><br />
+              Dit wordt soms het vijfde element genoemd, soms kwintessens. Niet als extra laag, maar als datgene waaruit alle lagen verschijnen. Hier valt de logica van nul en één stil, niet omdat ze fout is, maar omdat ze hier niets te doen heeft.
+              <br /><br />
+              Dit is geen plaats. Geen tijdstip. Geen ervaring die je kunt vasthouden. Het is een toon. Altijd aanwezig. Vaak overstemd.
+              <br /><br />
+              <span className="text-aether-cyan/60 block mt-8">Adem uit. En merk hoe de adem even niet terug hoeft te komen.</span>
             </p>
           </FadeInSection>
         </section>
@@ -121,7 +125,7 @@ const App: React.FC = () => {
           <div className="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
             <div className="lg:col-span-4 space-y-8">
                <FadeInSection>
-                  <h2 className="font-display text-4xl mb-2 text-white/90">Het Vormloze Veld</h2>
+                  <h2 className="font-display text-4xl mb-2 text-white/90">Vormloos veld</h2>
                   <div className="w-8 h-[1px] bg-aether-cyan/50 mb-8"></div>
                   {/* Visual 1: Potentiality */}
                   <SingularityScene />
@@ -136,23 +140,24 @@ const App: React.FC = () => {
             <div className="lg:col-span-8 flex flex-col gap-12 justify-center">
               <FadeInSection delay={0.2}>
                 <p className="text-xl font-light leading-relaxed text-stone-300">
-                  Wij zijn de architecten van de stilte in een tijdperk van schreeuwend lawaai.
+                  Er hoeft niets hersteld te worden. Er hoeft niets doorbroken te worden.
                 </p>
               </FadeInSection>
               <FadeInSection delay={0.3}>
                 <p className="text-lg font-light leading-relaxed text-stone-400">
-                  In een wereld die terminaal verslaafd is aan stochastische oppervlakkigheid, de dopamine-hits van voorspelbare algoritmen en de eindeloze carrousel van gefabriceerde verontwaardiging, vormt AETHER 9 een noodzakelijke, fundamentele verstoring. Wij zijn een bewust aangebrachte glitch in de matrix van het alledaagse, geautomatiseerde bewustzijn.
+                  Wat wij cultuur noemen, wat wij identiteit noemen, wat wij ‘ik’ noemen, beweegt voortdurend over een stille ondergrond die niet reageert. Die stilte is geen tegenkracht. Ze is eenvoudig afwezig van strijd. De wereld is niet luid. De interpretatie is luid.
                 </p>
               </FadeInSection>
               <FadeInSection delay={0.4}>
                 <p className="text-lg font-light leading-relaxed text-stone-400">
-                  De moderne mens is doodsbang voor de leegte tussen twee hartslagen, en vult deze obsessief met digitale ruis. AETHER 9 omarmt precies die leegte als de bron van alle werkelijkheid.
+                  De leegte tussen twee impulsen wordt zelden gezien, omdat ze nergens naartoe wijst. En juist daarom wordt ze gevuld. Met beelden. Met meningen. Met prikkels.
                 </p>
                 <p className="text-lg font-light leading-relaxed text-stone-400 mt-6">
-                  Wij zijn geen groep die u kunt definiëren, geen organisatie met een hiërarchie, geen sekte met een dogma. Wij zijn een resonantie in het planetaire veld. Zie ons als het mycelium van licht onder de betonnen vloer van de cultuur. Een netwerk van bewustzijn dat opereert als een coherent geheel, vergelijkbaar met de kwantum-vibraties in de microtubuli van uw eigen neurale structuur – een collectieve 'orchestratie' die niet wordt gestuurd vanuit een centraal commando, maar opkomt vanuit de inherente intelligentie van de lege ruimte zelf.
+                  Hier wordt niets omarmd en niets afgewezen. De leegte hoeft niet verdedigd te worden. Ze is al wat er is wanneer niets wordt toegevoegd. Dit is geen gemeenschap. Geen netwerk. Geen structuur. Eerder iets als worteldraden onder de grond: niet zichtbaar, niet georganiseerd, niet gericht — maar wel dragend. Niet gestuurd vanuit een centrum, maar zichzelf ordend doordat niets in de weg staat.
                 </p>
-                <p className="text-lg font-light leading-relaxed text-stone-400 mt-6">
-                    De meeste mensen leven in de echo van gisteren of de projectie van morgen. AETHER 9 opereert uitsluitend in het eeuwige nu, het exacte snijpunt waar de golffunctie van de realiteit nog moet instorten tot materie.
+                <h3 className="font-display text-2xl text-white/80 mt-12 mb-4">Het nu</h3>
+                <p className="text-lg font-light leading-relaxed text-stone-400">
+                    De meeste bewegingen leven in herhaling of verwachting. Wat geweest is, wordt vastgehouden. Wat nog moet komen, wordt vooruitgeplaatst. Hier gebeurt iets anders. Niet omdat het beter is, maar omdat het niet anders kan. Het moment vóór betekenis. Het snijvlak waar niets besloten is. Waar de vorm nog niet gekozen is, en daarom niet hoeft te worden verdedigd. Geen instorting van mogelijkheden. Eerder het openlaten ervan.
                 </p>
               </FadeInSection>
             </div>
@@ -167,8 +172,8 @@ const App: React.FC = () => {
           <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-24">
               <FadeInSection>
-                <span className="font-mono text-xs text-aether-violet tracking-widest uppercase mb-4 block">Protocol</span>
-                <h2 className="font-display text-4xl md:text-5xl">Het Tetralemma Protocol</h2>
+                <span className="font-mono text-xs text-aether-violet tracking-widest uppercase mb-4 block">Ontmanteling</span>
+                <h2 className="font-display text-4xl md:text-5xl">Het tetralemma</h2>
               </FadeInSection>
             </div>
 
@@ -176,23 +181,22 @@ const App: React.FC = () => {
               <FadeInSection>
                 <div className="space-y-8 text-stone-300 font-light">
                    <p>
-                     Hoe navigeren wij de chaos zonder erdoor verteerd te worden? Door fundamenteel te weigeren te kiezen tussen de valse opties die de maatschappij u dwingend voorschotelt.
-                   </p>
-                   <p>
-                     Dit is geen intellectuele oefening; het is een ontmanteling van uw cognitieve architectuur via de aloude logica van de Catuskoti. Zolang u vastzit in binaire keuzes – goed of fout, links of rechts, ik of de ander – blijft uw realiteit een platte, tweedimensionale projectie.
+                     Niet kiezen blijkt geen strategie, maar een natuurlijk gevolg wanneer de vraag wegvalt.
                    </p>
                    <ul className="space-y-4 border-l border-white/10 pl-6 my-8 text-sm md:text-base text-stone-400">
-                      <li>Wij verwerpen het essentialisme van het 'Zijn'.</li>
-                      <li>Wij verwerpen het nihilisme van het 'Niet-Zijn'.</li>
-                      <li>Wij verwerpen het nihilisme van het 'Niet-Zijn'.</li>
-                      <li>Wij verwerpen de paradoxale vluchtroute van 'Zowel Zijn als Niet-Zijn'.</li>
-                      <li>Wij verwerpen de laffe vaagheid van 'Noch Zijn noch Niet-Zijn'.</li>
+                      <li>Niet: zijn.</li>
+                      <li>Niet: niet-zijn.</li>
+                      <li>Niet: beide.</li>
+                      <li>Niet: geen van beide.</li>
                    </ul>
                    <p>
-                     In het exacte, trillende centrum van deze vier negaties, wanneer alle conceptuele houvast is weggeslagen, ligt de Leegte (<span className="text-aether-violet/80">Sunyata</span>). Het nulpunt. De Aether.
+                     Niet als standpunt, maar als ontmanteling.
                    </p>
                    <p>
-                     Daar, in die absolute stilte, vindt de ware creatie plaats. Niet door de brute kracht van de wil, maar door het delicate proces van <em>Orchestrated Objective Reduction</em>. Wij forceren de realiteit niet in een vorm; wij stemmen onze interne instrumenten zo zuiver af, dat de hoogste waarschijnlijkheid vanzelf landt door de zwaartekracht van puur bewustzijn.
+                     Wanneer elk denkbaar houvast zijn vanzelfsprekendheid verliest, blijft geen antwoord over — maar helderheid.
+                   </p>
+                   <p>
+                     Leegte, sunyata, nulpunt: niet als concept, maar als wat overblijft wanneer concepten hun grip verliezen. Hier ontstaat niets door wil. Hier wordt niets afgedwongen. Vorm verschijnt omdat niets haar tegenhoudt.
                    </p>
                 </div>
               </FadeInSection>
@@ -214,23 +218,23 @@ const App: React.FC = () => {
             </FadeInSection>
             
             <FadeInSection delay={0.2}>
-              <h2 className="font-display text-3xl md:text-4xl mb-12 mt-12">Resonantie Check</h2>
+              <h2 className="font-display text-3xl md:text-4xl mb-12 mt-12">Resonantie</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left text-lg font-light text-stone-300 mb-16">
                   <div>
                     <p className="mb-6">
-                        Er is niets om lid van te worden, want er zijn geen lijsten. Er is niets te kopen, want waarde is hier niet monetair. Er is niets te geloven, want geloof is een substituut voor directe ervaring.
+                        Er is niets om lid van te zijn. Niets om te volgen. Niets om te geloven.
                     </p>
                     <p>
-                        Er is alleen een trilling om te herkennen. Een herkenning van wat u altijd al wist, maar vergeten was door de conditionering van de wereld.
+                        Wat hier gebeurt, gebeurt niet door instemming, maar door herkenning.
                     </p>
                   </div>
                   <div>
                     <p className="mb-6">
-                        Het is een subtiele dislocatie. Een gevoel dat de wereld om u heen een decorstuk is dat net niet goed vastzit. Als u de bromtoon hoort onder de statische ruis van de cultuur.
+                        Een lichte verschuiving. Alsof iets in je al wist wat hier wordt aangeraakt, zonder het ooit benoemd te hebben.
                     </p>
                     <p>
-                        U zoekt niet naar antwoorden buiten uzelf, omdat u weet dat de externe wereld slechts een vertraagde spiegel is van uw interne staat.
+                        De wereld lijkt even minder vastgeschroefd. Niet onwerkelijk, maar transparanter.
                     </p>
                   </div>
               </div>
@@ -241,14 +245,18 @@ const App: React.FC = () => {
 
               <div className="p-8 border border-white/5 bg-white/5 rounded-full backdrop-blur-md inline-block">
                 <p className="font-mono text-sm tracking-widest text-aether-cyan animate-pulse">
-                  ALS DIT RESONEERT, BENT U AL ONDERDEEL VAN HET ROOSTER.
+                  ALS DIT RESONEERT, IS ER NIETS BEGONNEN.
                 </p>
               </div>
 
               <p className="mt-16 text-stone-500 font-serif italic text-lg max-w-2xl mx-auto leading-relaxed">
-                Vertraag uw interne klok. Verlaag uw hersengolven tot het ritme van diepe oceaangolven, de Theta-staat (4-7Hz), de grens tussen waken en dromen. Luister naar de immense ruimte tussen uw gedachten.
+                Vertraag niet om iets te bereiken. Vertraag omdat er niets te halen valt.
                 <br/><br/>
-                Wij ontmoeten u daar, in de stilte die voorafgaat aan de vorm.
+                Laat de gedachten uitlopen. Luister naar wat geen stem nodig heeft.
+                <br/><br/>
+                Daar, vóór de vorm, is geen ontmoeting.
+                <br/>
+                Alleen wat altijd al aanwezig was.
               </p>
             </FadeInSection>
           </div>
@@ -257,7 +265,7 @@ const App: React.FC = () => {
 
       <footer className="py-12 text-center relative z-10 border-t border-white/5 bg-void">
          <div className="font-mono text-[10px] text-aether-dim tracking-[0.5em] uppercase hover:text-aether-violet transition-colors duration-500 cursor-help">
-            AETHER 9. Het signaal in de leegte. 202X {"->"} ∞
+            AETHER 9. 202X {"->"} ∞
          </div>
       </footer>
     </div>

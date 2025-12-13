@@ -3,12 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import * as React from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Points, PointMaterial, Icosahedron, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
-
-const { useRef, useMemo } = React;
 
 // --- AETHER FIELD (Background Particles) ---
 const ParticleField = () => {
@@ -121,7 +119,7 @@ export const SingularityScene: React.FC = () => {
         <MorphingVoid />
       </Canvas>
       <div className="absolute bottom-4 right-4 text-[9px] font-mono text-white/20 tracking-widest z-20">
-        FIG 1.0: POTENTIALITEIT
+        FIG 1.0: VORMLOOSHEID
       </div>
     </div>
   );
@@ -189,7 +187,7 @@ export const QuantumLattice: React.FC = () => {
                 </Float>
             </Canvas>
             <div className="absolute bottom-4 right-4 text-[9px] font-mono text-white/20 tracking-widest z-20">
-                FIG 2.0: MICROTUBULI NETWERK
+                FIG 2.0: ONDERGROND
             </div>
         </div>
     );

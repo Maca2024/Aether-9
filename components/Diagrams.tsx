@@ -3,10 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-
-const { useState } = React;
 
 // --- TETRALEMMA GATE ---
 // Visualizes the 4 negations collapsing into the center void
@@ -14,10 +12,10 @@ export const TetralemmaGate: React.FC = () => {
   const [hovered, setHovered] = useState<number | null>(null);
 
   const nodes = [
-    { id: 1, label: "HET ZIJN", x: "50%", y: "10%", textPos: "-top-8" },
-    { id: 2, label: "NIET-ZIJN", x: "90%", y: "50%", textPos: "-right-8" },
-    { id: 3, label: "BEIDE", x: "50%", y: "90%", textPos: "-bottom-8" },
-    { id: 4, label: "GEEN VAN BEIDE", x: "10%", y: "50%", textPos: "-left-8" },
+    { id: 1, label: "NIET: ZIJN", x: "50%", y: "10%", textPos: "-top-8" },
+    { id: 2, label: "NIET: NIET-ZIJN", x: "90%", y: "50%", textPos: "-right-8" },
+    { id: 3, label: "NIET: BEIDE", x: "50%", y: "90%", textPos: "-bottom-8" },
+    { id: 4, label: "NIET: GEEN VAN BEIDE", x: "10%", y: "50%", textPos: "-left-8" },
   ];
 
   return (
@@ -34,7 +32,7 @@ export const TetralemmaGate: React.FC = () => {
                 animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.1, 0.3, 0.1], rotate: 180 }}
                 transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
-            <span className="absolute mt-12 text-[10px] font-mono tracking-[0.2em] text-aether-violet opacity-60">SUNYATA</span>
+            <span className="absolute mt-12 text-[10px] font-mono tracking-[0.2em] text-aether-violet opacity-60">LEEGTE</span>
         </div>
 
         {/* Connection Lines */}
@@ -123,7 +121,7 @@ export const CoherenceGraph: React.FC = () => {
             })}
              <div className="absolute top-0 w-full h-full flex items-center justify-center pointer-events-none">
                  <div className="w-full h-[1px] bg-white/10" />
-                 <span className="absolute right-0 top-[40%] text-[8px] font-mono text-aether-dim">SYNC.RATE: 99.9%</span>
+                 <span className="absolute right-0 top-[40%] text-[8px] font-mono text-aether-dim">HERKENNING</span>
              </div>
         </div>
     );
